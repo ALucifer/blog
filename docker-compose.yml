@@ -1,0 +1,66 @@
+services:
+    httpd:
+        build: docker/httpd
+        networks:
+            traefik_network: ~
+        labels:
+            - traefik.enable=true
+            - traefik.docker.network=traefik_network
+            - traefik.http.routers.admin_openask_http.rule=Host(`my-symfony.fr`)
+            - traefik.http.routers.admin_openask_http.entrypoints=http
+            - traefik.http.routers.admin_openask_https.rule=Host(`my-symfony.fr`)
+            - traefik.http.routers.admin_openask_https.entrypoints=https
+            - traefik.http.routers.admin_openask_https.tls=true
+            - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
+        volumes:
+            - ./public:/var/www/public
+            - './docker/httpd/volumes/sites:/usr/local/apache2/sites-enabled:ro'
+            - 'traefik-certs:/certs'
+        depends_on:
+            - php
+
+    php:
+        build:
+            context: docker/php
+            args:
+                UNIX_UID: ${UID:-1000}
+                UNIX_GID: ${GID:-1000}
+        networks:
+            traefik_network:
+                aliases:
+                    - symfony_php
+        extra_hosts:
+            - host.docker.internal:host-gateway
+        volumes:
+            - .:/var/www
+            - ${COMPOSER_HOME:-~/.composer}:/var/composer
+            - './docker/php/volumes/php.ini:/usr/local/etc/php/php.ini:ro'
+            - './docker/php/volumes/conf.d/curl.ini:/usr/local/etc/php/conf.d/curl.ini:ro'
+            - './docker/php/volumes/conf.d/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini:ro'
+            - './docker/php/volumes/conf.d/openssl.ini:/usr/local/etc/php/conf.d/openssl.ini:ro'
+            - './docker/php/volumes/conf.d/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro'
+            - 'traefik-certs:/certs'
+            - './docker/php/volumes/openssl.cnf:/etc/ssl/openssl.cnf:ro'
+    mysql:
+        image: mysql:8.0.30
+        container_name: mysql
+        networks:
+            traefik_network: ~
+        environment:
+            MYSQL_DATABASE: 'app'
+            MYSQL_USER: 'user'
+            MYSQL_PASSWORD: 'password'
+            MYSQL_ROOT_PASSWORD: 'password'
+        ports:
+            - '3308:3306'
+        expose:
+            - '3308'
+            - '3306'
+
+volumes:
+    traefik-certs:
+        external: true
+
+networks:
+    traefik_network:
+        external: true
