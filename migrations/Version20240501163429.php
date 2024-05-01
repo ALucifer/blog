@@ -7,20 +7,20 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20240425081249 extends AbstractMigration
+final class Version20240501163429 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Add owner in post table';
+        return 'Change name of category to be unique';
     }
 
     public function up(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE post CHANGE owner_id owner_id INT NOT NULL');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_64C19C15E237E06 ON category (name)');
     }
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE post CHANGE owner_id owner_id INT DEFAULT NULL');
+        $this->addSql('DROP INDEX UNIQ_64C19C15E237E06 ON category');
     }
 }

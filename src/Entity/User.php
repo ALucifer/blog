@@ -30,12 +30,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $posts;
 
     #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'owner', cascade: ['persist'])]
-    private Collection $categories;
+    private Collection $ownerCategories;
+
+    #[ORM\OneToMany(targetEntity: CategoryUser::class, mappedBy: 'user')]
+    private Collection $writableCategories;
 
     public function __construct()
     {
         $this->posts = new ArrayCollection();
-        $this->categories = new ArrayCollection();
+        $this->ownerCategories = new ArrayCollection();
+        $this->writableCategories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -78,14 +82,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->posts = $posts;
     }
 
-    public function categories(): Collection
+    public function ownerCategories(): Collection
     {
-        return $this->categories;
+        return $this->ownerCategories;
     }
 
-    public function setCategories(Collection $categories): void
+    public function setOwnerCategories(Collection $ownerCategories): void
     {
-        $this->categories = $categories;
+        $this->ownerCategories = $ownerCategories;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getWritableCategories(): Collection
+    {
+        return $this->writableCategories;
+    }
+
+    /**
+     * @param Collection $writableCategories
+     */
+    public function setWritableCategories(Collection $writableCategories): void
+    {
+        $this->writableCategories = $writableCategories;
     }
 
     public function getPassword(): ?string

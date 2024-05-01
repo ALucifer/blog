@@ -10,9 +10,6 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="{{ url('posts') }}">Posts</a>
                 </li>
-                <li class="navbar-nav">
-                    <a href="{{ url('category_add') }}" class="nav-link">Nouvelle categorie</a>
-                </li>
                 {% if app.user is null %}
                     <li class="nav-item">
                         <a href="{{ url('login') }}" class="nav-link">Login</a>
@@ -21,6 +18,9 @@
                         <a href="{{ url('register') }}" class="nav-link">S'inscrire</a>
                     </li>
                 {% else %}
+                    <li class="navbar-nav">
+                        <a href="{{ url('category_add') }}" class="nav-link">Nouvelle categorie</a>
+                    </li>
                     <li class="nav-item">
                         <a href="{{ url('user_dashboard') }}" class="nav-link">Dashboard</a>
                     </li>
