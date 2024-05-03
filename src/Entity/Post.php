@@ -26,6 +26,10 @@ class Post
     #[ORM\JoinColumn(nullable: false)]
     private User $owner;
 
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'posts')]
+    #[ORM\JoinColumn(nullable: false)]
+    private Category $category;
+
     #[ORM\PrePersist]
     public function prePersist(): void
     {
@@ -75,5 +79,15 @@ class Post
     public function setOwner(User $owner): void
     {
         $this->owner = $owner;
+    }
+
+    public function category(): Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(Category $category): void
+    {
+        $this->category = $category;
     }
 }

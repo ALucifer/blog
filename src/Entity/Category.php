@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[UniqueEntity('name', message: 'Nom déjà utilisé.')]
-final class Category
+class Category
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -30,9 +30,13 @@ final class Category
     #[ORM\OneToMany(targetEntity: CategoryUser::class, mappedBy: 'category')]
     private Collection $writers;
 
+    #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'category')]
+    private Collection $posts;
+
     public function __construct()
     {
         $this->writers = new ArrayCollection();
+        $this->posts = new ArrayCollection();
     }
 
     public function id(): int
@@ -85,5 +89,15 @@ final class Category
     public function setWriters(Collection $writers): void
     {
         $this->writers = $writers;
+    }
+
+    public function posts(): Collection
+    {
+        return $this->posts;
+    }
+
+    public function setPosts(Collection $posts): void
+    {
+        $this->posts = $posts;
     }
 }

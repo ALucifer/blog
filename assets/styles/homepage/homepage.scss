@@ -1,0 +1,26 @@
+.category {
+  &__container {
+    display: flex;
+    max-width: 350px;
+    flex-direction: column;
+    padding: 16px;
+    background: antiquewhite;
+    border-radius: 8px;
+  }
+
+  &__title {
+
+  }
+
+  &__post-listing {
+    padding: 0;
+    > li {
+      list-style-type: none;
+    }
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+  }
+}

@@ -14,6 +14,9 @@ class CategoryUser
     #[ORM\Column]
     private ?int $id;
 
+    #[ORM\Column(type: 'roles', nullable: false)]
+    private array $roles = ['ROLE_WRITER'];
+
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'writableCategories')]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
     private User $user;
@@ -72,6 +75,18 @@ class CategoryUser
     public function setCategory(Category $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function roles(): array
+    {
+        return $this->roles;
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
 
         return $this;
     }

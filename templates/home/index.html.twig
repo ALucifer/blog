@@ -1,10 +1,27 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    {% if app.user %}
-        Bonjour {{ app.user.pseudo }}
-    {% else %}
-        Hello world !
+{% block stylesheet %}
+    {{ encore_entry_link_tags('homepage') }}
+{% endblock %}
 
-    {% endif %}
+{% block body %}
+    <div class="container d-flex gap-3">
+        {% for category in categories %}
+            <div class="category__container">
+                <a
+                    href="{{ url('category_view', { category: category.id}) }}"
+                    class="category__title">
+                    {{ category.name }}
+                </a>
+                <ul class="category__post-listing">
+                    {% for post in category.posts.slice(0,5) %}
+                        <li class="category__item">
+                            <a href="{{ url('post_view', { id: post.id }) }}">{{ post.title }}</a>
+                            <i>Publié le: <b>{{ post.createdAt|date('Y-m-d') }}</b></i>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

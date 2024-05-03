@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\LoginType;
 use App\Form\RegisterType;
 use App\Repository\UserRepository;
+use App\ValuesObject\Roles;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,6 +40,7 @@ final class SecurityController extends AbstractController
             /** @var User $data */
             $data = $form->getData();
             $data->setPassword($passwordHasher->hashPassword($data, $data->getPassword()));
+            $data->setRoles(Roles::fromArray(['ROLE_USER']));
 
             $repository->save($data);
 
