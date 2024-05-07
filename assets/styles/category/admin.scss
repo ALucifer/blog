@@ -1,0 +1,45 @@
+.admin-category__container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.cards-container {
+  display: flex;
+  gap: 16px;
+}
+
+.card {
+  padding: 16px;
+  max-width: 300px;
+
+  &--red {
+    background: red;
+  }
+
+  &--bleu {
+    background: blue;
+  }
+
+  &__title {
+
+  }
+}
+
+.user-listing {
+  list-style: none;
+  padding: 0;
+
+  > li {
+    margin: 12px 0;
+    padding: 8px;
+    background: #3b82f6;
+    border-radius: 4px;
+    text-align: center;
+    color: whitesmoke;
+
+    + .new {
+      background: forestgreen;
+    }
+  }
+}

@@ -2,11 +2,10 @@ body {
     background-color: lightgray;
 }
 
-.login-container {
+.login-container, .register-container {
     display: flex;
     flex-direction: column;
-    margin: 0 auto;
-    margin-top: 10px;
+    margin: 10px auto 0;
     width: 400px;
 }
 

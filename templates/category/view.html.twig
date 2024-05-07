@@ -5,6 +5,33 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Hello</h1>
+    <div>
+        <h1>{{ category.name }}</h1>
+        <table class="table table-sm table-striped">
+            <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for post in category.posts %}
+                <tr>
+                    <td>{{ post.title }}</td>
+                    <td>
+                        <a href="{{ path('post_view', { id: post.id }) }}" class="btn btn-primary">Voir</a>
+                        {% if is_granted('edit', post) %}
+                            <a href="{{ url('post_edit', { id: post.id }) }}">Editer</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% if is_granted('admin', category) %}
+            <a href="{{ url('post_add') }}">Nouveau post</a>
+            <a href="{{ url('category_admin', { category: category.id }) }}">Administration</a>
+        {% endif %}
+    </div>
 {% endblock %}
 

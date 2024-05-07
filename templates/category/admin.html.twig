@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Admin Category | {{ category.name }}
+{% endblock %}
+
+{% block stylesheet %}
+    {{ encore_entry_link_tags('categoryAdmin') }}
+{% endblock %}
+
+{% block body %}
+    <div class="admin-category__container">
+        <div class="cards-container">
+            {% set first = category.posts.first %}
+            {% if first %}
+                <div class="card">
+                    <h2 class="card__title">{{ category.posts }}</h2>
+                    <p class="card__subtitle">Il y a 2h</p>
+                </div>
+            {% endif %}
+            <div class="card">
+                <h2 class="card__title">{{ category.posts|length }}</h2>
+                <p class="card__subtitle">Posts</p>
+            </div>
+        </div>
+        <div>
+            {% if category.posts|length > 0 %}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Titre</th>
+                        <th scope="col">Créé le</th>
+                        <th scope="col">Créateur</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for post in category.posts %}
+                        <tr>
+                            <td>{{ post.title }}</td>
+                            <td>{{ post.createdAt|date('Y-m-d') }}</td>
+                            <td>{{ post.owner.pseudo }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+            <ul class="user-listing">
+                {% for writer in category.writers %}
+                    <li>{{ writer.user.pseudo }}</li>
+                {% endfor %}
+                <li class="new">
+                    <a href="{{ url('category_admin_form_user', { category: category.id }) }}">Ajouter un nouvelle utilisateur</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+

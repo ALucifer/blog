@@ -11,10 +11,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class CategoryController extends AbstractController
 {
     #[Route('/category/add', name: 'category_add')]
+    #[IsGranted('ROLE_ADMIN_CATEGORY')]
     public function add(Request $request, CategoryRepository $repository): Response
     {
         $form = $this->createForm(CategoryType::class, new Category());
@@ -39,9 +41,11 @@ final class CategoryController extends AbstractController
     #[Route('/category/{category}', name: 'category_view')]
     public function view(Category $category): Response
     {
-        dd($category);
         return $this->render(
-            'category/view.html.twig'
+            'category/view.html.twig',
+            [
+                'category' => $category
+            ]
         );
     }
 }

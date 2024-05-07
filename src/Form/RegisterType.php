@@ -23,7 +23,7 @@ final class RegisterType extends AbstractType
                 [
                     'attr' => [
                         'placeholder' => 'Email',
-                    ]
+                    ],
                 ]
             )
             ->add(

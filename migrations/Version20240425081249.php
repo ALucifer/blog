@@ -11,7 +11,7 @@ final class Version20240425081249 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Add owner in post table';
     }
 
     public function up(Schema $schema): void
