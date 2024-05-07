@@ -7,13 +7,10 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\RegisterType;
 use App\Repository\UserRepository;
-use App\ValuesObject\Roles;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 final class SecurityController extends AbstractController
@@ -31,7 +28,7 @@ final class SecurityController extends AbstractController
     }
 
     #[Route('/register', name: 'register')]
-    public function register(Request $request, UserRepository $repository, UserPasswordHasherInterface $passwordHasher): Response
+    public function register(Request $request, UserRepository $repository): Response
     {
         $form = $this->createForm(RegisterType::class);
         $form->handleRequest($request);
@@ -39,10 +36,9 @@ final class SecurityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var User $data */
             $data = $form->getData();
-            $data->setPassword($passwordHasher->hashPassword($data, $data->getPassword()));
-            $data->setRoles(Roles::fromArray(['ROLE_USER']));
 
             $repository->save($data);
+            $this->addFlash('success', 'Vous êtes bien enregistré.');
 
             return $this->redirectToRoute('login');
         }
@@ -53,12 +49,5 @@ final class SecurityController extends AbstractController
                 'form' => $form->createView(),
             ]
         );
-    }
-
-    #[Route('/dashboard', name: 'user_dashboard')]
-    #[IsGranted('ROLE_USER')]
-    public function dashboard(): Response
-    {
-        return $this->render('security/dashboard.html.twig');
     }
 }

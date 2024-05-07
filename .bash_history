@@ -20,3 +20,35 @@ exit
 ./bin/console doctrine:migration:migrate
 ./bin/console doctrine:migration:migrate
 exit
+./bin/console doctrine:migration:migrate
+exit
+./bin/console doctrine:migration:migrate
+./bin/console doctrine:migration:migrate
+./bin/console doctrine:migration:migrate
+./bin/console doctrine:migration:migrate
+./bin/console doctrine:migration:migrate
+./bin/console doctrine:migration:migrate
+./bin/console doctrine:migration:migrate
+./bin/console doctrine:migration:migrate
+./bin/console doctrine:migration:migrate
+./bin/console doctrine:migration:migrate
+./bin/console doctrine:migration:migrate
+exit
+./bin/console doctrine:migration:migrate
+exit
+./bin/console doctrine:migration:migrate
+./bin/console doctrine:migration:migrate
+./bin/console doctrine:migration:migrate
+./bin/console doctrine:migration:migrate
+./bin/console doctrine:migration:migrate
+./bin/console doctrine:migration:migrate
+./bin/console doctrine:migration:migrate
+./bin/console doctrine:migration:migrate
+./bin/console doctrine:migration:migrate
+./bin/console doctrine:migration:migrate
+./bin/console doctrine:migration:migrate
+./bin/console doctrine:migration:migrate
+./bin/console doctrine:migration:migrate
+./bin/console doctrine:migration:migrate
+./bin/console doctrine:migration:migrate
+exit

@@ -87,6 +87,15 @@ abstract class Collection implements \Countable, \IteratorAggregate
         return $this->items ? $this->items[\array_key_last($this->items)] : null;
     }
 
+    public function contains(mixed $element): bool
+    {
+        $result = $this->search(
+            fn ($item) => (string) $item === (string) $element,
+        );
+
+        return count($result) > 0;
+    }
+
     /**
      * @template U
      *

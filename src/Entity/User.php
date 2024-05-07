@@ -2,15 +2,18 @@
 
 namespace App\Entity;
 
+use App\EventListener\Doctrine\UserListener;
 use App\Repository\UserRepository;
 use App\ValuesObject\Roles;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\EntityListeners([UserListener::class])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -24,7 +27,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', nullable: false)]
     private string $password;
 
-    #[ORM\Column(type: 'string', length: 50)]
+    #[ORM\Column(type: 'string', length: 50, unique: true)]
     private string $pseudo;
 
     #[ORM\Column(type: 'roles', nullable: false)]
@@ -149,5 +152,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUserIdentifier(): string
     {
         return $this->email;
+    }
+
+    public function canWriteCategory(Category $category): bool
+    {
+        return (bool) $this->writableCategories->filter(
+            fn(CategoryUser $item) => $item->getCategory() === $category && $item->getUser() === $this
+        )->first();
+    }
+
+    public function getAccessByCategory(Category $category): CategoryUser
+    {
+        $access = $this->writableCategories->filter(
+            fn(CategoryUser $item) => $item->getCategory() === $category && $item->getUser() === $this
+        )->first();
+
+        return $access ?? throw new UnauthorizedHttpException('User don\'t have access.');
     }
 }

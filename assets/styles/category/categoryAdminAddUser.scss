@@ -1,0 +1,12 @@
+.user-item {
+  display: flex;
+  background: whitesmoke;
+  padding: 18px;
+  margin: 4px 0;
+  border-radius: 8px;
+  list-style: none;
+
+  > div {
+    width: 100%;
+  }
+}

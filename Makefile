@@ -20,3 +20,6 @@ destroy: ## Fully destroy current docker-compose services by stopping them and r
 
 bash:
 	$(DCR) php bash
+
+install:
+	$(DCR) php php bin/console doctrine:fixture:load -n

@@ -11,6 +11,8 @@ Encore
 
     .addEntry('app', './assets/app.js')
     .addEntry('homepage', './assets/homepage.js')
+    .addEntry('categoryAdmin', './assets/styles/category/admin.js')
+    .addEntry('categoryAdminAddUser', './assets/styles/category/categoryAdminAddUser.js')
     .splitEntryChunks()
     .enableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild()

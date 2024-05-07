@@ -28,6 +28,10 @@
             {% endfor %}
             </tbody>
         </table>
+        {% if is_granted('admin', category) %}
+            <a href="{{ url('post_add') }}">Nouveau post</a>
+            <a href="{{ url('category_admin', { category: category.id }) }}">Administration</a>
+        {% endif %}
     </div>
 {% endblock %}
 

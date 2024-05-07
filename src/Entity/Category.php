@@ -27,7 +27,7 @@ class Category
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'categories')]
     private User $owner;
 
-    #[ORM\OneToMany(targetEntity: CategoryUser::class, mappedBy: 'category')]
+    #[ORM\OneToMany(targetEntity: CategoryUser::class, mappedBy: 'category', orphanRemoval: true)]
     private Collection $writers;
 
     #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'category')]
@@ -83,12 +83,21 @@ class Category
         return $this->writers;
     }
 
-    /**
-     * @param Collection $writers
-     */
-    public function setWriters(Collection $writers): void
+    public function addWriter(CategoryUser $writer): self
     {
-        $this->writers = $writers;
+        if(!$this->writers->contains($writer)) {
+            $this->writers->add($writer);
+            $writer->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWriter(CategoryUser $writer): self
+    {
+        $this->writers->removeElement($writer);
+
+        return $this;
     }
 
     public function posts(): Collection
@@ -96,8 +105,20 @@ class Category
         return $this->posts;
     }
 
-    public function setPosts(Collection $posts): void
+    public function addPost(Post $post): self
     {
-        $this->posts = $posts;
+        if (!$this->posts->contains($post)) {
+            $this->posts->add($post);
+            $post->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removePost(Post $post): self
+    {
+        $this->posts->removeElement($post);
+
+        return $this;
     }
 }

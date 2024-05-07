@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\ValuesObject\Roles;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -15,7 +16,7 @@ class CategoryUser
     private ?int $id;
 
     #[ORM\Column(type: 'roles', nullable: false)]
-    private array $roles = ['ROLE_WRITER'];
+    private Roles $roles;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'writableCategories')]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
@@ -24,6 +25,11 @@ class CategoryUser
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'writers')]
     #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id')]
     private Category $category;
+
+    public function __construct()
+    {
+        $this->roles = Roles::fromArray(['ROLE_WRITER']);
+    }
 
     /**
      * @return int|null
@@ -79,12 +85,17 @@ class CategoryUser
         return $this;
     }
 
-    public function roles(): array
+    public function getRoles(): array
+    {
+        return $this->roles->toRawArray();
+    }
+
+    public function roles(): Roles
     {
         return $this->roles;
     }
 
-    public function setRoles(array $roles): self
+    public function setRoles(Roles $roles): self
     {
         $this->roles = $roles;
 
