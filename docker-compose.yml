@@ -57,6 +57,9 @@ services:
             - '3308'
             - '3306'
 
+    ci:
+        image: jakzal/phpqa-alpine
+
 volumes:
     traefik-certs:
         external: true
