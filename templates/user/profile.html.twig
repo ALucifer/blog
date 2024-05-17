@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div>
+        <p>Invitation (s)</p>
+        <ul class="listing">
+            {% for access in waitingAccess %}
+                <div class="blog-card">
+                    <p>{{ access.category.name }} <i>catégorie</i></p>
+                    <p>
+                        <button class="btn btn-success">Accepter</button>
+                        <button class="btn btn-danger">Refuser</button>
+                    </p>
+                </div>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
+
+{% block title %}
+    Profile {{ app.user.pseudo }}
+{% endblock %}
+

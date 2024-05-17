@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\ValuesObject\CategoryUserState;
 use App\ValuesObject\Roles;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -17,6 +18,9 @@ class CategoryUser
 
     #[ORM\Column(type: 'roles', nullable: false)]
     private Roles $roles;
+
+    #[ORM\Column(type: 'string', options: ['default' => 'waiting_approve'])]
+    private string $state;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'writableCategories')]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
@@ -98,6 +102,18 @@ class CategoryUser
     public function setRoles(Roles $roles): self
     {
         $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function state(): string
+    {
+        return $this->state;
+    }
+
+    public function setState(CategoryUserState $state, array $context = []): self
+    {
+        $this->state = $state->value;
 
         return $this;
     }

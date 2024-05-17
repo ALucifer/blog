@@ -4,12 +4,17 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\CategoryUserRepository;
 use App\Repository\UserRepository;
+use Assert\Assertion;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/user')]
 class UserController extends AbstractController
@@ -40,6 +45,27 @@ class UserController extends AbstractController
             'user' => $user,
             'form' => $form,
         ]);
+    }
+
+    #[Route('/profile', name: 'app_user_profile', methods: ['GET'])]
+    #[IsGranted('ROLE_USER')]
+    public function profile(CategoryUserRepository $categoryUserRepository, Security $security): Response
+    {
+        /** @var User $user */
+        $user = $security->getUser();
+
+        if (!$user) {
+            throw new UnauthorizedHttpException('No authorized.');
+        }
+
+        Assertion::isInstanceOf($user, User::class);
+
+        return $this->render(
+            'user/profile.html.twig',
+            [
+                'waitingAccess' => $categoryUserRepository->getWaitingAccess($user)
+            ]
+        );
     }
 
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]

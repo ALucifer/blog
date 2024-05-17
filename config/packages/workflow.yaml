@@ -1,0 +1,28 @@
+framework:
+    workflows:
+        add_user_role_to_category:
+            type: 'workflow'
+            marking_store:
+                type: 'method'
+                property: 'state'
+            supports:
+                - App\Entity\CategoryUser
+            initial_marking: waiting_approve
+            places:
+                - waiting_approve
+                - approved
+                - rejected
+                - removed
+            transitions:
+                to_approve:
+                    from: waiting_approve
+                    to: approved
+                to_rejected:
+                    from: waiting_approve
+                    to: rejected
+                to_remove:
+                    from: waiting_approve
+                    to: removed
+                to_delete:
+                    from: approved
+                    to: removed

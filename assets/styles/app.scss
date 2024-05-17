@@ -1,0 +1,34 @@
+body {
+    background-color: lightgray;
+}
+
+.login-container, .register-container {
+    display: flex;
+    flex-direction: column;
+    margin: 10px auto 0;
+    width: 400px;
+}
+
+.dashboard_container {
+    margin: 16px;
+}
+
+
+.blog-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: antiquewhite;
+    border-radius: 8px;
+    padding: 12px;
+
+    > p {
+        margin: 0;
+    }
+}
+
+.listing {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}

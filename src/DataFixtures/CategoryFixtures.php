@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Category;
 use App\Entity\CategoryUser;
+use App\ValuesObject\CategoryUserState;
 use App\ValuesObject\Role;
 use App\ValuesObject\Roles;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -31,12 +32,14 @@ class CategoryFixtures extends Fixture implements DependentFixtureInterface
         $categoryUserA
             ->setCategory($categoryA)
             ->setUser($this->getReference(UserFixtures::ADMIN))
+            ->setState(CategoryUserState::APPROVED)
             ->setRoles(Roles::fromArray([(string) Role::adminCategory()]));
 
         $categoryUserB = new CategoryUser();
         $categoryUserB
             ->setCategory($categoryB)
             ->setUser($this->getReference(UserFixtures::ADMIN))
+            ->setState(CategoryUserState::APPROVED)
             ->setRoles(Roles::fromArray([(string) Role::adminCategory()]));
 
         $manager->persist($categoryUserA);

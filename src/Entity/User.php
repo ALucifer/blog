@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\EventListener\Doctrine\UserListener;
 use App\Repository\UserRepository;
+use App\ValuesObject\Role;
 use App\ValuesObject\Roles;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -154,14 +155,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
-    public function canWriteCategory(Category $category): bool
+    public function hasAccessToCategory(Category $category): bool
     {
         return (bool) $this->writableCategories->filter(
             fn(CategoryUser $item) => $item->getCategory() === $category && $item->getUser() === $this
         )->first();
     }
 
-    public function getAccessByCategory(Category $category): CategoryUser
+    public function isAdminToCategory(Category $category): bool
+    {
+        /** @var CategoryUser|false $access */
+        $access = $this->writableCategories->filter(
+            fn(CategoryUser $item) => $item->getCategory() === $category && $item->getUser() === $this
+        )->first();
+
+        if (!$access) return false;
+
+
+        return $access->roles()->contains(Role::adminCategory());
+    }
+
+    public function getAccessByCategory(Category $category)
     {
         $access = $this->writableCategories->filter(
             fn(CategoryUser $item) => $item->getCategory() === $category && $item->getUser() === $this

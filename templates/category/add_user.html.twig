@@ -9,14 +9,15 @@
 
 {% block body %}
     <div class="container">
+        <h2>{{ category.name }}</h2>
         <ul>
             {% for user in users %}
                 <li class="user-item">
                     <div class="d-flex justify-content-between">
                         <p>{{ user.pseudo }}</p>
                         <div>
-                            {% if not user.getAccessByCategory(category).roles.contains(constant('App\\ValuesObject\\Role::ADMIN_CATEGORY')) %}
-                                {% if user.canWriteCategory(category) %}
+                            {% if not user.isAdminToCategory(category) %}
+                                {% if user.hasAccessToCategory(category) %}
                                     <form method="post" action="{{ url('category_admin_remove_user', { categoryUser: user.getAccessByCategory(category).id }) }}">
                                         <button class="btn btn-danger">Supprimer</button>
                                     </form>

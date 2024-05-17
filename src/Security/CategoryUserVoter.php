@@ -3,6 +3,7 @@
 namespace App\Security;
 
 use App\Entity\CategoryUser;
+use App\Entity\User;
 use App\ValuesObject\Role;
 use Assert\Assertion;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -21,8 +22,10 @@ class CategoryUserVoter extends Voter
      */
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
+        /** @var User $authenticatedUser */
+        $authenticatedUser = $token->getUser();
         Assertion::isInstanceOf($subject, CategoryUser::class);
 
-        return $subject->roles()->contains(Role::adminCategory());
+        return $authenticatedUser->ownerCategories()->contains($subject->getCategory());
     }
 }

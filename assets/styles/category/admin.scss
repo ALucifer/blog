@@ -9,7 +9,7 @@
   gap: 16px;
 }
 
-.card {
+.blog-card {
   padding: 16px;
   max-width: 300px;
 
@@ -37,6 +37,10 @@
     border-radius: 4px;
     text-align: center;
     color: whitesmoke;
+
+    + .need-validation {
+      background: lightsalmon;
+    }
 
     + .new {
       background: forestgreen;

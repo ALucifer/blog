@@ -1,7 +1,7 @@
 doctrine:
     dbal:
         driver: 'pdo_mysql'
-        url: 'mysql://user:password@127.0.0.1:3308/app'
+        url: 'mysql://user:password@mysql:3306/app'
         server_version: '8.0.33'
         charset: utf8
         profiling_collect_backtrace: '%kernel.debug%'

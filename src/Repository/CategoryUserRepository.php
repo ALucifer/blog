@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Category;
 use App\Entity\CategoryUser;
 use App\Entity\User;
+use App\ValuesObject\CategoryUserState;
 use App\ValuesObject\Role;
 use App\ValuesObject\Roles;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -23,6 +24,7 @@ class CategoryUserRepository extends ServiceEntityRepository
         $entity
             ->setUser($user)
             ->setCategory($category)
+            ->setState(CategoryUserState::WAITING)
             ->setRoles($roles ?? Roles::fromArray([(string) Role::writer()]));
 
         $this->getEntityManager()->persist($entity);
@@ -33,5 +35,13 @@ class CategoryUserRepository extends ServiceEntityRepository
     {
         $this->getEntityManager()->remove($element);
         $this->getEntityManager()->flush();
+    }
+
+    public function getWaitingAccess(User $user): array
+    {
+        return $this->findBy([
+            'user' => $user,
+            'state' => CategoryUserState::WAITING
+        ]);
     }
 }

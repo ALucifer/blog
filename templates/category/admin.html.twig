@@ -13,12 +13,12 @@
         <div class="cards-container">
             {% set first = category.posts.first %}
             {% if first %}
-                <div class="card">
+                <div class="blog-card">
                     <h2 class="card__title">{{ category.posts }}</h2>
                     <p class="card__subtitle">Il y a 2h</p>
                 </div>
             {% endif %}
-            <div class="card">
+            <div class="blog-card">
                 <h2 class="card__title">{{ category.posts|length }}</h2>
                 <p class="card__subtitle">Posts</p>
             </div>
@@ -46,7 +46,7 @@
             {% endif %}
             <ul class="user-listing">
                 {% for writer in category.writers %}
-                    <li>{{ writer.user.pseudo }}</li>
+                    <li {% if writer.state == 'waiting_approve' %}class="need-validation"{% endif %}>{{ writer.user.pseudo }}{% if writer.state == 'waiting_approve' %}(en attente de validation){% endif %}</li>
                 {% endfor %}
                 <li class="new">
                     <a href="{{ url('category_admin_form_user', { category: category.id }) }}">Ajouter un nouvelle utilisateur</a>
