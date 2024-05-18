@@ -18,20 +18,25 @@ class CategoryUserRepository extends ServiceEntityRepository
         parent::__construct($registry, CategoryUser::class);
     }
 
-    public function save(Category $category, User $user, Roles $roles = null)
+    public function create(Category $category, User $user): void
     {
         $entity = new CategoryUser();
         $entity
             ->setUser($user)
             ->setCategory($category)
-            ->setState(CategoryUserState::WAITING)
-            ->setRoles($roles ?? Roles::fromArray([(string) Role::writer()]));
+            ->setState(CategoryUserState::WAITING->value)
+            ->setRoles(Roles::fromArray([(string) Role::waitingApprovement()]));
 
-        $this->getEntityManager()->persist($entity);
+        $this->save($entity);
+    }
+
+    public function save(CategoryUser $categoryUser): void
+    {
+        $this->getEntityManager()->persist($categoryUser);
         $this->getEntityManager()->flush();
     }
 
-    public function remove(CategoryUser $element)
+    public function remove(CategoryUser $element): void
     {
         $this->getEntityManager()->remove($element);
         $this->getEntityManager()->flush();

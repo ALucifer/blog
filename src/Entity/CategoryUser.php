@@ -106,14 +106,14 @@ class CategoryUser
         return $this;
     }
 
-    public function state(): string
+    public function getState(): string
     {
         return $this->state;
     }
 
-    public function setState(CategoryUserState $state, array $context = []): self
+    public function setState(string $state, array $context = []): self
     {
-        $this->state = $state->value;
+        $this->state = $state;
 
         return $this;
     }

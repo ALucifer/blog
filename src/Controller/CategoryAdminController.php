@@ -45,7 +45,7 @@ final class CategoryAdminController extends AbstractController
     #[IsGranted('admin', 'category')]
     public function newUser(Category $category, User $user, CategoryUserRepository $categoryUserRepository): Response
     {
-        $categoryUserRepository->save($category, $user);
+        $categoryUserRepository->create($category, $user);
 
         return $this->redirectToRoute(
             'category_admin_form_user',

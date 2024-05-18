@@ -32,14 +32,14 @@ class CategoryFixtures extends Fixture implements DependentFixtureInterface
         $categoryUserA
             ->setCategory($categoryA)
             ->setUser($this->getReference(UserFixtures::ADMIN))
-            ->setState(CategoryUserState::APPROVED)
+            ->setState(CategoryUserState::APPROVED->value)
             ->setRoles(Roles::fromArray([(string) Role::adminCategory()]));
 
         $categoryUserB = new CategoryUser();
         $categoryUserB
             ->setCategory($categoryB)
             ->setUser($this->getReference(UserFixtures::ADMIN))
-            ->setState(CategoryUserState::APPROVED)
+            ->setState(CategoryUserState::APPROVED->value)
             ->setRoles(Roles::fromArray([(string) Role::adminCategory()]));
 
         $manager->persist($categoryUserA);

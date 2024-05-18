@@ -8,8 +8,14 @@
                 <div class="blog-card">
                     <p>{{ access.category.name }} <i>catégorie</i></p>
                     <p>
-                        <button class="btn btn-success">Accepter</button>
-                        <button class="btn btn-danger">Refuser</button>
+                        {% if workflow_can(access, 'to_approved') %}
+                            <form method="POST" action="{{ url('user_response_access', { 'categoryUser': access.id, 'state': 'approved' }) }}">
+                                <button class="btn btn-success">Accepter</button>
+                            </form>
+                            <form method="POST" action="{{ url('user_response_access', { 'categoryUser': access.id, 'state': 'rejected'}) }}">
+                                <button class="btn btn-danger">Refuser</button>
+                            </form>
+                        {% endif %}
                     </p>
                 </div>
             {% endfor %}

@@ -16,18 +16,22 @@
                     <div class="d-flex justify-content-between">
                         <p>{{ user.pseudo }}</p>
                         <div>
-                            {% if not user.isAdminToCategory(category) %}
-                                {% if user.hasAccessToCategory(category) %}
-                                    <form method="post" action="{{ url('category_admin_remove_user', { categoryUser: user.getAccessByCategory(category).id }) }}">
-                                        <button class="btn btn-danger">Supprimer</button>
-                                    </form>
-                                {% else %}
+                            {% if user.isAdminToCategory(category) %}
+                                <p class="bg-info rounded p-1">Administrateur</p>
+                            {% else %}
+                                {% if not user.hasAccessToCategory(category) %}
                                     <form method="post" action="{{ url('category_admin_new_user', { user: user.id, category: category.id }) }}">
                                         <button class="btn btn-primary">Ajouter</button>
                                     </form>
+                                {% else %}
+                                    {% if workflow_has_marked_place(user.getAccessByCategory(category), 'rejected') %}
+                                        <p class="text-danger">L'utilisateur à refusé l'invitation</p>
+                                    {% else %}
+                                        <form method="post" action="{{ url('category_admin_remove_user', { categoryUser: user.getAccessByCategory(category).id }) }}">
+                                            <button class="btn btn-danger">Supprimer</button>
+                                        </form>
+                                    {% endif %}
                                 {% endif %}
-                            {% else %}
-                                <p class="bg-info rounded p-1">Administrateur</p>
                             {% endif %}
                         </div>
                     </div>

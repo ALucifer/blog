@@ -1,10 +1,9 @@
 framework:
     workflows:
         add_user_role_to_category:
-            type: 'workflow'
+            type: 'state_machine'
             marking_store:
-                type: 'method'
-                property: 'state'
+                service: 'App\Workflow\UserRoleToApproveMarkingStore'
             supports:
                 - App\Entity\CategoryUser
             initial_marking: waiting_approve
@@ -14,7 +13,7 @@ framework:
                 - rejected
                 - removed
             transitions:
-                to_approve:
+                to_approved:
                     from: waiting_approve
                     to: approved
                 to_rejected:
